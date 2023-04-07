@@ -1,0 +1,8 @@
+{
+  "prettier.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": false
+  },
+  "cSpell.words": ["Divs", "langchain", "llms", "nodejieba", "opdf"]
+}

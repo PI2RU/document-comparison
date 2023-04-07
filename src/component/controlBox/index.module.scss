@@ -1,0 +1,66 @@
+.controlBox {
+  position: fixed;
+  width: 320px;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: #fff;
+  padding: 0 10px 62px 10px;
+}
+
+.boxTitle {
+  height: 50px;
+  line-height: 50px;
+  padding: 0 20px;
+  font-size: 16px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 2rem;
+}
+
+.summary {
+  font-size: 12px;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+.boxItem {
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  padding: 10px 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.summaryBox {
+  padding: 0 6px;
+  margin-bottom: 3rem;
+  width: 140px;
+  height: 60px;
+  font-size: 12px;
+  border: 1px solid #eee;
+}
+
+// 颜色选择器
+.colorPickerContainer {
+  width: 140px;
+  height: 60px;
+  font-size: 12px;
+  border: 1px solid #eee;
+}
+
+.colorInput {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.colorDisplay {
+  font-size: 16px;
+  color: #333;
+}

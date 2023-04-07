@@ -1,0 +1,47 @@
+{
+  "name": "online-doc-compare-nextjs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prettier": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,scss,html}'",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@dqbd/tiktoken": "^1.0.3",
+    "antd": "^5.4.0",
+    "langchain": "^0.0.48",
+    "lodash-es": "^4.17.21",
+    "next": "13.2.4",
+    "nodejieba": "^2.6.0",
+    "pdfjs-dist": "^3.5.141",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "swr": "^2.1.2",
+    "tailwindcss": "^3.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "18.15.11",
+    "@types/react": "18.0.33",
+    "@types/react-dom": "18.0.11",
+    "autoprefixer": "^10.4.14",
+    "eslint": "8.37.0",
+    "eslint-config-next": "13.2.4",
+    "eslint-config-prettier": "^8.8.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.0",
+    "postcss": "^8.4.21",
+    "prettier": "^2.8.7",
+    "sass": "^1.60.0",
+    "typescript": "5.0.3"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,css,scss,html}": [
+      "eslint --cache --cache-location .next/cache/eslint/ --fix",
+      "prettier --write"
+    ]
+  }
+}

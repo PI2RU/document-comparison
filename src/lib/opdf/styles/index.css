@@ -1,0 +1,76 @@
+@import url(./var.css);
+.textLayer {
+  /* opacity: 1 !important; */
+}
+
+.textLayer ::selection {
+  background: rgba(159, 131, 6, 0.5) !important;
+  /* mix-blend-mode: multiply !important; */
+}
+.textLayer br::-moz-selection {
+  background: transparent !important;
+}
+.textLayer br::selection {
+  background: transparent !important;
+}
+
+.pdf-page {
+  direction: ltr;
+  overflow: hidden;
+  position: relative;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: 0 0 10px #ccc;
+  border-radius: 3px;
+  margin: 32px 0;
+}
+
+.matching_highlight {
+  display: inline-flex;
+  justify-content: center;
+  align-content: center;
+  line-height: 1;
+  border-radius: 1px;
+  mix-blend-mode: multiply;
+}
+
+.grab_cursor {
+  cursor: -webkit-grab !important;
+  cursor: grab !important;
+}
+
+.grab-to-pan-grabbing {
+  cursor: grabbing !important;
+  position: fixed;
+  background: rgba(0, 0, 0, 0);
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 50000; /* should be higher than anything else in PDF.js! */
+}
+
+.select_highlight {
+  outline: 2px solid red;
+  transition: outline-color 0.3s;
+  cursor: pointer !important;
+  border-radius: 2px;
+}
+
+.highlight_paragraph {
+  border: 1px solid rgba(0, 0, 255, 0.6) !important;
+}
+
+.default_match_highlight {
+  /* background-color: rgba(255, 209, 6, 1) !important; */
+  background-color: var(--default_selection_color) !important;
+}
+
+.highlight_area {
+  cursor: text;
+  position: absolute;
+}
