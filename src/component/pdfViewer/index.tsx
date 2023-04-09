@@ -74,14 +74,15 @@ export const PdfViewer = ({
           setSummary(result);
 
           setTimeout(() => {
-            data.generateHightLight(
-              result.keywords.map((item: string) => {
-                return {
-                  index: [1],
-                  text: item,
-                };
-              })
-            );
+            const light = result.keywords.map((item: string) => {
+              return {
+                index: [1],
+                text: item,
+              };
+            });
+            console.log("light---->", light);
+
+            data.generateHightLight(light);
           }, 100);
 
           opdfInstance.listenResize(pdfRef.current);

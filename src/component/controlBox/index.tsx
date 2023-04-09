@@ -1,3 +1,4 @@
+import { ScrollView } from "@/lib";
 import { Button, Slider, Space, Tag, Tooltip } from "antd";
 import { SliderMarks } from "antd/es/slider";
 import { ChangeEvent, useState } from "react";
@@ -54,6 +55,11 @@ export const ControlBox = ({
                   bordered={false}
                   className="mb-2 cursor-pointer"
                   color="magenta"
+                  onClick={() => {
+                    ScrollView({
+                      to: `${item}_${index}`,
+                    });
+                  }}
                   key={index}
                 >
                   {item}

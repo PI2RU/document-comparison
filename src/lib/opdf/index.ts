@@ -23,22 +23,20 @@ export class OPdf {
   private _pdfDocument: PDFDocumentProxy | undefined;
   private readonly _container: HTMLElement;
   private readonly _shouldListenResize: boolean = false;
-  public task: RenderPageTask | undefined;
-  public canvasType = "canvas";
-  public pageNum = 0;
-  public layer: Layer | undefined;
   private _frameId: number | null = null;
-  private firstRender = true;
+  private _firstRender = true;
   private _containerLastStyle = {
     width: 0,
     height: 0,
   };
-
+  public task: RenderPageTask | undefined;
+  public canvasType = "canvas";
+  public pageNum = 0;
+  public layer: Layer | undefined;
   public opdfStatus: OpdfStatus = {
     status: "unloaded",
     renderType: "all",
   };
-  private unlistenResize: () => void = () => {};
 
   constructor({ src, container, shouldListenResize, canvasType }: OpdfProps) {
     this._loadingTask = getDocument(src);
@@ -231,8 +229,8 @@ export class OPdf {
 
   public listenResize(container?: HTMLElement | null) {
     if (container) {
-      if (this.firstRender) {
-        this.firstRender = false;
+      if (this._firstRender) {
+        this._firstRender = false;
         return;
       }
 
@@ -277,3 +275,5 @@ export class OPdf {
     }
   }
 }
+
+export * from "./utils";
