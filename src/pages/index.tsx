@@ -97,7 +97,12 @@ export default function Home() {
 
   return (
     <div>
-      <ControlBox props={summaryText} />
+      <ControlBox
+        props={{
+          ...summaryText,
+          uniqueId: "pdf1",
+        }}
+      />
       <div className="pdfTwo" onContextMenu={(e) => handleContextMenu(e)}>
         <PdfViewer
           pdfRef={pdfRef}

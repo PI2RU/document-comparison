@@ -16,6 +16,7 @@ export class Search {
   private _pageContent: Map<number, string> = new Map();
   private _matchReg: RegExp | null = null;
   private _matchStrArr: MatchInfos[] = [];
+  public uniqueId = "";
   public highLightContainers: HighLightContainer[] = [];
   public matchMap: MatchType = new Map();
   public textDivPositions: Map<number, TextDivPosition[]> = new Map();
@@ -23,12 +24,15 @@ export class Search {
     search,
     pageQuery,
     preMatch,
+    uniqueId,
   }: {
     search: MatchInfos[];
     pageQuery?: number;
     preMatch?: boolean;
+    uniqueId: string;
   }) {
     this._matchStrArr = search;
+    this.uniqueId = uniqueId;
     if (pageQuery) {
       // TODO: search in page or all
     }
@@ -274,7 +278,7 @@ export class Search {
 
     if (matchText) {
       const linkId = getLinkId(matchInfo.keyword);
-      const dataMatchId = `data-match-super-${linkId}_${matchItemIndex}`;
+      const dataMatchId = `data-match-super-${linkId}_${this.uniqueId}_${matchItemIndex}`;
 
       const beforeTextNode = document.createTextNode(
         textDiv.textContent?.substring(0, pos[0]) || ""

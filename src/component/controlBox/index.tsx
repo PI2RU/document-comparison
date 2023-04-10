@@ -15,10 +15,12 @@ const bgColors = {
 export const ControlBox = ({
   props,
 }: {
-  props: { summary: string[]; keywords: string[] };
+  props: {
+    summary: string[];
+    keywords: string[];
+    uniqueId: string;
+  };
 }) => {
-  console.log("data -->", props);
-
   return (
     <div className={styles.controlBox}>
       <h5 className={styles.boxTitle}>控制面板</h5>
@@ -57,7 +59,7 @@ export const ControlBox = ({
                   color="magenta"
                   onClick={() => {
                     ScrollView({
-                      to: `${item}_${index}`,
+                      to: `${item}_${props.uniqueId}_${index}`,
                     });
                   }}
                   key={index}

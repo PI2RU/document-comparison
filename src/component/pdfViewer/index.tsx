@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useState } from "react";
-import useSWRMutation from "swr/mutation";
+// import useSWRMutation from "swr/mutation";
 import { OPdf } from "../../lib/opdf";
 
 const pdfUrl = "/assets/fangchan.pdf";
@@ -25,6 +25,13 @@ const result = {
   ],
 };
 
+const light = result.keywords.map((item: string) => {
+  return {
+    index: [1],
+    text: item,
+  };
+});
+
 export const PdfViewer = ({
   pdfRef,
   pdfRef2,
@@ -34,21 +41,21 @@ export const PdfViewer = ({
   pdfRef2: RefObject<HTMLDivElement>;
   setSummary: (data: { summary: string[]; keywords: string[] }) => void;
 }) => {
-  const { trigger: getSummary, isMutating } = useSWRMutation(
-    "/api/doc/summary",
-    update,
-    {
-      onSuccess: (data) => {
-        console.log("getSummary->", data);
-        setSummary(result);
-      },
-    }
-  );
+  // const { trigger: getSummary, isMutating } = useSWRMutation(
+  //   "/api/doc/summary",
+  //   update,
+  //   {
+  //     onSuccess: (data) => {
+  //       console.log("getSummary->", data);
+  //       setSummary(result);
+  //     },
+  //   }
+  // );
 
-  const { trigger: getSegmentation } = useSWRMutation(
-    "/api/doc/segmentation",
-    update
-  );
+  // const { trigger: getSegmentation } = useSWRMutation(
+  //   "/api/doc/segmentation",
+  //   update
+  // );
 
   // TODO:切换全部渲染和单页渲染的缓存
   const [Opdf, setOpdf] = useState<OPdf | null>(null);
@@ -64,27 +71,15 @@ export const PdfViewer = ({
     });
 
     opdf.init().then(async (opdfInstance) => {
-      console.log("init opdfInstance->");
       await opdfInstance
         .render()
         .then(async (data) => {
-          console.log("data---->", data);
-          // const result = await getSummary(data.text);
-
           setSummary(result);
-
           setTimeout(() => {
-            const light = result.keywords.map((item: string) => {
-              return {
-                index: [1],
-                text: item,
-              };
-            });
-            console.log("light---->", light);
-
-            data.generateHightLight(light);
+            data.generateHightLight(light, "pdf1");
           }, 100);
 
+          // TODO: resize
           opdfInstance.listenResize(pdfRef.current);
           setOpdf(Opdf);
         })
@@ -103,7 +98,13 @@ export const PdfViewer = ({
     });
 
     opdf2.init().then(async (opdfInstance) => {
-      await opdfInstance.render();
+      const data = await opdfInstance.render();
+
+      setTimeout(() => {
+        data.generateHightLight(light, "pdf2");
+      }, 100);
+
+      // TODO: resize
       opdfInstance.listenResize(pdfRef2.current);
       setOpdf2(Opdf);
     });

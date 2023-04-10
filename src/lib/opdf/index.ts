@@ -72,7 +72,10 @@ export class OPdf {
   } = {}): Promise<{
     time: number;
     text: string;
-    generateHightLight: (data: { text: string; index: number[] }[]) => void;
+    generateHightLight: (
+      data: { text: string; index: number[] }[],
+      uniqueId: string
+    ) => void;
   }> {
     const that = this;
     if (process.env.NODE_ENV === "development") {
@@ -170,7 +173,8 @@ export class OPdf {
                   hightLight: {
                     index: number[];
                     text: string;
-                  }[]
+                  }[],
+                  uniqueId: string
                 ) => {
                   that.opdfStatus.status = "loaded";
 
@@ -178,6 +182,7 @@ export class OPdf {
                   const search = new Search({
                     search: hightLight || [],
                     preMatch: true,
+                    uniqueId,
                   });
 
                   search.init(that.task?._pageContentMap);
