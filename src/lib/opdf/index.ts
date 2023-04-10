@@ -82,7 +82,7 @@ export class OPdf {
   }> {
     const that = this;
     if (process.env.NODE_ENV === "development") {
-      console.log("render start", new Date().getTime());
+      console.info("render start", new Date().getTime());
     }
 
     that.opdfStatus.status = "loading";
@@ -161,7 +161,7 @@ export class OPdf {
           let text: string = "";
 
           Promise.all(pageRenderPromise).then((value) => {
-            console.log("render result --> ", value);
+            console.info("render result --> ", value);
 
             value.forEach((item) => {
               // TODO: item?.pageProxy?.cleanup();
@@ -249,7 +249,6 @@ export class OPdf {
 
       if (Math.abs(width - this._containerLastStyle.width) > 5) {
         this._containerLastStyle.width = width;
-        console.log("width change", entry.contentRect);
         this._requestUpdate();
       }
     });

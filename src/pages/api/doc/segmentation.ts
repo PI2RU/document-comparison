@@ -5,8 +5,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(req.body);
-
   if (req.method === "POST") {
     const text = req.body;
     if (!text) {

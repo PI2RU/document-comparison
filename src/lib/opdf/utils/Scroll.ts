@@ -15,8 +15,6 @@ export const ScrollView = (
     renderParent: false,
   }
 ) => {
-  console.log("scroll options -->", options);
-
   if (options?.duration && options?.duration <= 0) {
     console.error("duration must be greater than 0");
   }

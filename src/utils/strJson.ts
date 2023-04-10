@@ -4,10 +4,5 @@ export const cleanedStrToParse = (text: string) => {
     .replace(/(\w+)\s*:/g, '"$1":')
     .trim();
 
-  const parseText = JSON.parse(cleanedText);
-
-  console.log("typeof ", typeof parseText);
-  console.log("parseText", parseText);
-
-  return parseText;
+  return JSON.parse(cleanedText);
 };

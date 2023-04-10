@@ -32,8 +32,6 @@ export class Search {
     uniqueId: string;
   }) {
     this._matchStrArr = search;
-    console.log("search -->", search, pageQuery, preMatch, uniqueId);
-
     this.uniqueId = uniqueId;
 
     if (pageQuery) {
@@ -51,7 +49,6 @@ export class Search {
   }
 
   init(pageDataMap?: RenderPageMap) {
-    console.log("init search", pageDataMap);
     if (pageDataMap) {
       this.initPageContent(pageDataMap);
     } else {
@@ -84,10 +81,6 @@ export class Search {
 
         //  处理文本,用于page全局匹配
         const divSpan = divs?.[index];
-
-        // if (pageIndex === 1) {
-        // console.log("divSpan", divSpan, pageIndex, index, "\n");
-        // }
 
         const pageInfo = this.textDivPositions?.get(pageIndex);
         const lastDiv = pageInfo?.[pageInfo.length - 1];
@@ -245,14 +238,6 @@ export class Search {
     const textStartIndex = Math.min(matchInfo.startIndex, matchInfo.endIndex);
     const textEndIndex = Math.max(matchInfo.startIndex, matchInfo.endIndex);
 
-    // console.log(
-    //   "log =>>>>>>>>>>>>>>>>>>>>",
-    //   domStartIndex,
-    //   domEndIndex,
-    //   textStartIndex,
-    //   textEndIndex
-    // );
-
     if (domStartIndex <= textStartIndex && domEndIndex >= textEndIndex) {
       // 包含
       isMatch = true;
@@ -281,69 +266,9 @@ export class Search {
     } else {
       isMatch = false;
     }
-
-    if (isMatch) {
-      console.log(
-        "isMatch  ->",
-        isMatch,
-        highlightStartOffset,
-        highlightEndOffset
-      );
-    }
     return [isMatch, highlightStartOffset, highlightEndOffset];
   }
 
-  // private getMatchData(
-  //   textDiv: HTMLElement,
-  //   matchInfo: MatchInfo,
-  //   pos: [number, number],
-  //   matchItemIndex: number,
-  //   pageIndex: number
-  // ) {
-  //   console.log("textDiv ->", textDiv);
-  //   console.log("pos ->", pos);
-
-  //   const matchText = textDiv?.textContent?.substring(pos[0], pos[1]);
-  //   console.log("matchText", matchText);
-
-  //   if (matchText) {
-  //     const linkId = getLinkId(matchInfo.keyword);
-  //     const dataMatchId = `data-match-super-${linkId}_${this.uniqueId}_${matchItemIndex}`;
-
-  //     console.log(
-  //       "beforeTextNode  -->",
-  //       textDiv.textContent?.substring(0, pos[0]) || ""
-  //     );
-
-  //     const beforeTextNode = document.createTextNode(
-  //       textDiv.textContent?.substring(0, pos[0]) || ""
-  //     );
-  //     const afterTextNode = document.createTextNode(
-  //       textDiv.textContent?.substring(pos[1]) || ""
-  //     );
-
-  //     console.log("afterTextNode", afterTextNode);
-
-  //     const span = document.createElement("span");
-
-  //     span.setAttribute("role", "presentation");
-  //     span.setAttribute("dir", "ltr");
-  //     span.setAttribute("style", "position: static;");
-
-  //     span.textContent = matchText;
-
-  //     textDiv.innerHTML = "";
-  //     textDiv.appendChild(beforeTextNode);
-  //     textDiv.appendChild(span);
-  //     textDiv.appendChild(afterTextNode);
-
-  //     return {
-  //       pageIndex,
-  //       nodeResource: span,
-  //       dataMatchId,
-  //     };
-  //   }
-  // }
   private getMatchData(
     textDiv: HTMLElement,
     matchInfo: MatchInfo,
@@ -351,11 +276,7 @@ export class Search {
     matchItemIndex: number,
     pageIndex: number
   ) {
-    console.log("textDiv ->", textDiv);
-    console.log("pos ->", pos);
-
     const matchText = textDiv?.textContent?.substring(pos[0], pos[1]);
-    console.log("matchText", matchText);
 
     if (matchText) {
       const linkId = getLinkId(matchInfo.keyword);
