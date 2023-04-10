@@ -2,6 +2,7 @@ import { ScrollView } from "@/lib";
 import { Button, Slider, Space, Tag, Tooltip } from "antd";
 import { SliderMarks } from "antd/es/slider";
 import { ChangeEvent, useState } from "react";
+
 import styles from "./index.module.scss";
 
 const bgColors = {

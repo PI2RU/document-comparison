@@ -27,7 +27,7 @@ const result = {
 
 const light = result.keywords.map((item: string) => {
   return {
-    index: [1],
+    sortId: [1],
     text: item,
   };
 });

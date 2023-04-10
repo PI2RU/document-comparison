@@ -32,7 +32,10 @@ export class Search {
     uniqueId: string;
   }) {
     this._matchStrArr = search;
+    console.log("search -->", search, pageQuery, preMatch, uniqueId);
+
     this.uniqueId = uniqueId;
+
     if (pageQuery) {
       // TODO: search in page or all
     }
@@ -87,7 +90,6 @@ export class Search {
         // }
 
         const pageInfo = this.textDivPositions?.get(pageIndex);
-
         const lastDiv = pageInfo?.[pageInfo.length - 1];
 
         const startIndex = lastDiv?.endIndex ? lastDiv?.endIndex : 0;

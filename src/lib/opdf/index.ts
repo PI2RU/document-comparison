@@ -9,6 +9,7 @@ import {
 
 import {
   Layer,
+  MatchInfos,
   OpdfProps,
   OpdfStatus,
   RenderPageTask,
@@ -18,6 +19,9 @@ import {
   Search,
 } from "./core";
 
+/**
+ * 先Init, 拿到Init后的实例, 再Render
+ */
 export class OPdf {
   private _loadingTask: PDFDocumentLoadingTask | undefined;
   private _pdfDocument: PDFDocumentProxy | undefined;
@@ -35,7 +39,7 @@ export class OPdf {
   public layer: Layer | undefined;
   public opdfStatus: OpdfStatus = {
     status: "unloaded",
-    renderType: "all",
+    renderType: RenderType.ALL,
   };
 
   constructor({ src, container, shouldListenResize, canvasType }: OpdfProps) {
@@ -45,6 +49,7 @@ export class OPdf {
     this.canvasType = canvasType || "canvas";
   }
 
+  // 初始化
   async init() {
     const pdfDocument = await this._loadingTask?.promise;
     if (pdfDocument) {
@@ -63,8 +68,9 @@ export class OPdf {
     return this;
   }
 
+  // 页面主要渲染逻辑
   public async render({
-    type = "all",
+    type = RenderType.ALL,
     pageNum,
   }: {
     type?: RenderType;
@@ -72,10 +78,7 @@ export class OPdf {
   } = {}): Promise<{
     time: number;
     text: string;
-    generateHightLight: (
-      data: { text: string; index: number[] }[],
-      uniqueId: string
-    ) => void;
+    generateHightLight: (data: MatchInfos[], uniqueId: string) => void;
   }> {
     const that = this;
     if (process.env.NODE_ENV === "development") {
@@ -154,6 +157,7 @@ export class OPdf {
             return;
           }
 
+          // 清空容器，text用于存储所有的文本
           let text: string = "";
 
           Promise.all(pageRenderPromise).then((value) => {
@@ -170,15 +174,12 @@ export class OPdf {
                 time: new Date().getTime(),
                 text,
                 generateHightLight: (
-                  hightLight: {
-                    index: number[];
-                    text: string;
-                  }[],
+                  hightLight: MatchInfos[],
                   uniqueId: string
                 ) => {
                   that.opdfStatus.status = "loaded";
 
-                  console.log("init search", hightLight);
+                  // console.log("init search", hightLight);
                   const search = new Search({
                     search: hightLight || [],
                     preMatch: true,
@@ -200,31 +201,12 @@ export class OPdf {
     });
   }
 
-  // TODO: destroy
-  // public destroy() {
-  //   this._loadingTask?.destroy();
-  //   this._pdfDocument?.destroy();
-  //   this.task?.destroy();
-  //   this.layer?.destroy();
-  //   this.unlistenResize();
-  // }
-
-  public getPageProxy(pageNum: number) {
-    if (!this._pdfDocument) {
-      console.error("pdf document is not loaded");
-      return;
-    }
-
-    return this._pdfDocument?.getPage(pageNum);
-  }
-
+  // Update逻辑
   public update() {
     if (this.layer) {
       if (this.opdfStatus.status === "loaded") {
-        // TODO: Render
         this._container.innerHTML = "";
         this.render();
-
         // TODO: Css Render 逻辑, TODO: canvas 模糊
       }
     } else {
@@ -232,6 +214,7 @@ export class OPdf {
     }
   }
 
+  // Resize逻辑
   public listenResize(container?: HTMLElement | null) {
     if (container) {
       if (this._firstRender) {
@@ -278,6 +261,19 @@ export class OPdf {
         this._frameId = null;
       });
     }
+  }
+
+  // TODO: destroy
+
+  // 工具方法
+  // 获取当前页的PageProxy
+  public getPageProxy(pageNum: number) {
+    if (!this._pdfDocument) {
+      console.error("pdf document is not loaded");
+      return;
+    }
+
+    return this._pdfDocument?.getPage(pageNum);
   }
 }
 

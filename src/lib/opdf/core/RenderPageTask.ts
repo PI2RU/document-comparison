@@ -71,11 +71,11 @@ export class RenderPageTask {
           await task.promise.then(() => {
             canvas.hidden = false;
 
-            console.log(
-              `render ${pageIndex} page task end -->`,
-              this._pageContentMap.get(pageIndex),
-              new Date().getTime()
-            );
+            // console.log(
+            //   `render ${pageIndex} page task end -->`,
+            //   this._pageContentMap.get(pageIndex),
+            //   new Date().getTime()
+            // );
 
             capability.resolve({
               endTime: new Date().getTime(),

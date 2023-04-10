@@ -20,7 +20,10 @@ export interface OpdfProps {
   canvasType?: "canvas" | "svg";
 }
 
-export type RenderType = "all" | "single";
+export enum RenderType {
+  ALL = "all",
+  SINGLE = "single",
+}
 
 export interface OpdfStatus {
   status: Status;
@@ -46,7 +49,7 @@ export type RenderPageMap = Map<
 >;
 
 export type MatchInfos = {
-  index: number[];
+  sortId: number[];
   text: string;
 };
 
