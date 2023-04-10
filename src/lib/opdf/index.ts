@@ -92,7 +92,7 @@ export class OPdf {
 
     that.opdfStatus.renderType = type;
 
-    if (type === "all") {
+    if (type === RenderType.ALL) {
       for (let pageIndex = 1; pageIndex <= this.pageNum; pageIndex++) {
         const capability = createPromiseCapability();
         pageProxyPromises.push(capability.promise);
@@ -118,7 +118,7 @@ export class OPdf {
           capability.resolve(pageProxy);
         });
       }
-    } else if (type === "single") {
+    } else if (type === RenderType.SINGLE) {
       if (pageNum) {
         const capability = createPromiseCapability();
         pageProxyPromises.push(capability.promise);
@@ -179,7 +179,6 @@ export class OPdf {
                 ) => {
                   that.opdfStatus.status = "loaded";
 
-                  // console.log("init search", hightLight);
                   const search = new Search({
                     search: hightLight || [],
                     preMatch: true,
@@ -202,6 +201,7 @@ export class OPdf {
   }
 
   // Update逻辑
+
   public update() {
     if (this.layer) {
       if (this.opdfStatus.status === "loaded") {
@@ -215,6 +215,7 @@ export class OPdf {
   }
 
   // Resize逻辑
+
   public listenResize(container?: HTMLElement | null) {
     if (container) {
       if (this._firstRender) {

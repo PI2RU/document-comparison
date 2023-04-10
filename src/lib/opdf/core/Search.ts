@@ -195,29 +195,38 @@ export class Search {
     highlight: HighLightContainer
   ) {
     textDivPosition?.filter((item) => {
-      const [flag, startOffset, endOffset] = this.checkMatchConditions(
-        item,
-        matchInfo
-      );
-
-      if (flag && item.divSpan) {
-        const matchData = this.getMatchData(
-          item.divSpan,
-          matchInfo,
-          [startOffset, endOffset],
-          matchItemIndex,
-          pageIndex
+      if (item.startIndex !== item.endIndex) {
+        const [flag, startOffset, endOffset] = this.checkMatchConditions(
+          item,
+          matchInfo
         );
 
-        if (matchData?.dataMatchId) {
-          highlight.dataMatchId = matchData?.dataMatchId;
+        // 过滤startOffset和endOffset都为0的情况
+        if (startOffset === 0 && endOffset === 0) {
+          return false;
         }
-        if (matchData?.nodeResource) {
-          highlight.nodeResource.push(matchData.nodeResource);
+
+        if (flag && item.divSpan) {
+          const matchData = this.getMatchData(
+            item.divSpan,
+            matchInfo,
+            [startOffset, endOffset],
+            matchItemIndex,
+            pageIndex
+          );
+
+          if (matchData?.dataMatchId) {
+            highlight.dataMatchId = matchData?.dataMatchId;
+          }
+          if (matchData?.nodeResource) {
+            highlight.nodeResource.push(matchData.nodeResource);
+          }
         }
+
+        return flag;
       }
 
-      return flag;
+      return false;
     });
   }
 
@@ -225,50 +234,116 @@ export class Search {
     item: TextDivPosition,
     matchInfo: MatchInfo
   ): [boolean, number, number] {
-    let flag: boolean;
-    let startOffset = 0;
-    let endOffset = 0;
+    let isMatch: boolean;
 
-    const itemStartIndex = item.startIndex;
-    const itemEndIndex = item.endIndex;
+    let highlightStartOffset = 0;
+    let highlightEndOffset = 0;
 
-    const matchStartIndex = Math.min(matchInfo.startIndex, matchInfo.endIndex);
-    const matchEndIndex = Math.max(matchInfo.startIndex, matchInfo.endIndex);
+    const domStartIndex = item.startIndex;
+    const domEndIndex = item.endIndex;
 
-    if (itemStartIndex <= matchStartIndex && itemEndIndex >= matchEndIndex) {
-      flag = true;
-      startOffset = matchStartIndex - itemStartIndex;
-      endOffset = matchEndIndex - itemStartIndex;
+    const textStartIndex = Math.min(matchInfo.startIndex, matchInfo.endIndex);
+    const textEndIndex = Math.max(matchInfo.startIndex, matchInfo.endIndex);
+
+    // console.log(
+    //   "log =>>>>>>>>>>>>>>>>>>>>",
+    //   domStartIndex,
+    //   domEndIndex,
+    //   textStartIndex,
+    //   textEndIndex
+    // );
+
+    if (domStartIndex <= textStartIndex && domEndIndex >= textEndIndex) {
+      // 包含
+      isMatch = true;
+      highlightStartOffset = textStartIndex - domStartIndex;
+      highlightEndOffset = textEndIndex - domStartIndex;
+    } else if (domStartIndex >= textStartIndex && domEndIndex <= textEndIndex) {
+      isMatch = true;
+      highlightStartOffset = 0;
+      highlightEndOffset = domEndIndex - domStartIndex;
     } else if (
-      itemStartIndex >= matchStartIndex &&
-      itemEndIndex <= matchEndIndex
+      domStartIndex <= textStartIndex &&
+      domEndIndex >= textStartIndex &&
+      domEndIndex <= textEndIndex
     ) {
-      flag = true;
-      startOffset = 0;
-      endOffset = itemEndIndex - itemStartIndex;
+      isMatch = true;
+      highlightStartOffset = textStartIndex - domStartIndex;
+      highlightEndOffset = domEndIndex - domStartIndex;
     } else if (
-      itemStartIndex <= matchStartIndex &&
-      itemEndIndex >= matchStartIndex &&
-      itemEndIndex <= matchEndIndex
+      domStartIndex >= textStartIndex &&
+      domStartIndex <= textEndIndex &&
+      domEndIndex >= textEndIndex
     ) {
-      flag = true;
-      startOffset = matchStartIndex - itemStartIndex;
-      endOffset = itemEndIndex - itemStartIndex;
-    } else if (
-      itemStartIndex >= matchStartIndex &&
-      itemStartIndex <= matchEndIndex &&
-      itemEndIndex >= matchEndIndex
-    ) {
-      flag = true;
-      startOffset = 0;
-      endOffset = matchEndIndex - itemStartIndex;
+      isMatch = true;
+      highlightStartOffset = 0;
+      highlightEndOffset = textEndIndex - domStartIndex;
     } else {
-      flag = false;
+      isMatch = false;
     }
 
-    return [flag, startOffset, endOffset];
+    if (isMatch) {
+      console.log(
+        "isMatch  ->",
+        isMatch,
+        highlightStartOffset,
+        highlightEndOffset
+      );
+    }
+    return [isMatch, highlightStartOffset, highlightEndOffset];
   }
 
+  // private getMatchData(
+  //   textDiv: HTMLElement,
+  //   matchInfo: MatchInfo,
+  //   pos: [number, number],
+  //   matchItemIndex: number,
+  //   pageIndex: number
+  // ) {
+  //   console.log("textDiv ->", textDiv);
+  //   console.log("pos ->", pos);
+
+  //   const matchText = textDiv?.textContent?.substring(pos[0], pos[1]);
+  //   console.log("matchText", matchText);
+
+  //   if (matchText) {
+  //     const linkId = getLinkId(matchInfo.keyword);
+  //     const dataMatchId = `data-match-super-${linkId}_${this.uniqueId}_${matchItemIndex}`;
+
+  //     console.log(
+  //       "beforeTextNode  -->",
+  //       textDiv.textContent?.substring(0, pos[0]) || ""
+  //     );
+
+  //     const beforeTextNode = document.createTextNode(
+  //       textDiv.textContent?.substring(0, pos[0]) || ""
+  //     );
+  //     const afterTextNode = document.createTextNode(
+  //       textDiv.textContent?.substring(pos[1]) || ""
+  //     );
+
+  //     console.log("afterTextNode", afterTextNode);
+
+  //     const span = document.createElement("span");
+
+  //     span.setAttribute("role", "presentation");
+  //     span.setAttribute("dir", "ltr");
+  //     span.setAttribute("style", "position: static;");
+
+  //     span.textContent = matchText;
+
+  //     textDiv.innerHTML = "";
+  //     textDiv.appendChild(beforeTextNode);
+  //     textDiv.appendChild(span);
+  //     textDiv.appendChild(afterTextNode);
+
+  //     return {
+  //       pageIndex,
+  //       nodeResource: span,
+  //       dataMatchId,
+  //     };
+  //   }
+  // }
   private getMatchData(
     textDiv: HTMLElement,
     matchInfo: MatchInfo,
@@ -276,34 +351,51 @@ export class Search {
     matchItemIndex: number,
     pageIndex: number
   ) {
+    console.log("textDiv ->", textDiv);
+    console.log("pos ->", pos);
+
     const matchText = textDiv?.textContent?.substring(pos[0], pos[1]);
+    console.log("matchText", matchText);
 
     if (matchText) {
       const linkId = getLinkId(matchInfo.keyword);
       const dataMatchId = `data-match-super-${linkId}_${this.uniqueId}_${matchItemIndex}`;
 
-      const beforeTextNode = document.createTextNode(
-        textDiv.textContent?.substring(0, pos[0]) || ""
+      const newSpan = document.createElement("span");
+      newSpan.setAttribute("role", "presentation");
+      newSpan.setAttribute("dir", "ltr");
+      newSpan.setAttribute("style", "position: static;");
+      newSpan.textContent = matchText;
+
+      const range = document.createRange();
+      const iterator = document.createNodeIterator(
+        textDiv,
+        NodeFilter.SHOW_TEXT
       );
-      const afterTextNode = document.createTextNode(
-        textDiv.textContent?.substring(pos[1]) || ""
-      );
+      let offset = 0;
+      let currentNode;
 
-      const span = document.createElement("span");
+      while ((currentNode = iterator.nextNode())) {
+        const nodeLength = currentNode.textContent?.length;
+        if (!nodeLength) continue;
+        if (offset + nodeLength < pos[0]) {
+          offset += nodeLength;
+        } else {
+          range.setStart(currentNode, pos[0] - offset);
+          range.setEnd(currentNode, pos[1] - offset);
+          break;
+        }
+      }
 
-      span.setAttribute("role", "presentation");
-      span.setAttribute("dir", "ltr");
-
-      span.textContent = matchText;
-
-      textDiv.innerHTML = "";
-      textDiv.appendChild(beforeTextNode);
-      textDiv.appendChild(span);
-      textDiv.appendChild(afterTextNode);
+      if (range.startContainer === range.endContainer) {
+        const parentNode = range.startContainer.parentNode;
+        range.surroundContents(newSpan);
+        parentNode?.normalize();
+      }
 
       return {
         pageIndex,
-        nodeResource: span,
+        nodeResource: newSpan,
         dataMatchId,
       };
     }

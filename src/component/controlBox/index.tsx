@@ -60,7 +60,7 @@ export const ControlBox = ({
                   color="magenta"
                   onClick={() => {
                     ScrollView({
-                      to: `${item}_${props.uniqueId}_${index}`,
+                      to: `${item}_${props.uniqueId}_1`,
                     });
                   }}
                   key={index}

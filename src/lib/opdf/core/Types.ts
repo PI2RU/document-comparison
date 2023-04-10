@@ -83,3 +83,24 @@ export type RenderTask = {
   pageWrap: HTMLElement;
   textContentItemsStr: string[];
 };
+
+export interface Area {
+  pageIndex: number;
+  top: number;
+  left: number;
+  right: number;
+  width: number;
+  height: number;
+  divRight: number;
+  matchId: string;
+}
+
+export interface Selection {
+  pageIndex: number;
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+  right: number;
+  matchId: string;
+}
