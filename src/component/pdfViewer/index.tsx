@@ -1,5 +1,4 @@
 import React, { RefObject, useEffect, useState } from "react";
-// import useSWRMutation from "swr/mutation";
 import { OPdf } from "../../lib/opdf";
 
 const pdfUrl = "/assets/fangchan.pdf";

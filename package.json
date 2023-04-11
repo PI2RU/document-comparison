@@ -40,8 +40,10 @@
     "typescript": "5.0.3"
   },
   "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --cache --cache-location .next/cache/eslint/ --fix"
+    ],
     "src/**/*.{js,jsx,ts,tsx,css,scss,html}": [
-      "eslint --cache --cache-location .next/cache/eslint/ --fix",
       "prettier --write"
     ]
   }

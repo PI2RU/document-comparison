@@ -1,0 +1,11 @@
+.summaryBox {
+  height: 30px;
+  font-size: 12px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 3rem 2rem;
+  .slider {
+    width: calc(100% - 100px);
+  }
+}

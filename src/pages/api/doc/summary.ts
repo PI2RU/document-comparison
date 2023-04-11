@@ -1,5 +1,5 @@
 import { summaryPrompt } from "@/prompt/summary";
-import { cleanedStrToParse, cleanedString } from "@/utils";
+import { cleanedStrToParse } from "@/utils";
 import { PromptTemplate } from "langchain";
 import { LLMChain } from "langchain/chains";
 import { OpenAI } from "langchain/llms";

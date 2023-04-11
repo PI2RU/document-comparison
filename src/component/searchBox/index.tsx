@@ -54,7 +54,7 @@ export const SearchBox: FC<SearchBoxProps> = ({
       })}
 
       <Input
-        placeholder="input search loading default"
+        placeholder="你好，智能助手！"
         value={value}
         disabled={loading}
         onChange={(e) => setValue(e.target.value)}
