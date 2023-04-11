@@ -1,7 +1,6 @@
 import { Input, Select } from "antd";
 import { FC, useState } from "react";
 import useSWRMutation from "swr/mutation";
-import { throttle } from "lodash-es";
 
 export enum FilterCondition {
   AND = "AND",
@@ -32,23 +31,14 @@ export const FilterWord: FC<KeywordFilterProps> = ({ onFilter, text }) => {
     generateWordsPost
   );
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilter(e.target.value);
-    applyFilter(e.target.value, operator);
-  };
-
-  const handleOperatorChange = (value: string) => {
-    const newOperator = value as FilterOperator;
-    setOperator(newOperator);
-    applyFilter(filter, newOperator);
-  };
-
   const applyFilter = async (
     filterKeywords: string,
     filterOperator: FilterOperator
   ) => {
-    const keywords = (await generateWords(filterKeywords)) as string[];
-    const sentences = (await generateWords(text)) as string[];
+    console.log("filterKeywords --->", filterKeywords);
+
+    const keywords = (await generateWords(filterKeywords))?.result as string[];
+    const sentences = (await generateWords(text))?.result as string[];
 
     console.log("sentences --->", sentences, keywords);
 
@@ -73,10 +63,27 @@ export const FilterWord: FC<KeywordFilterProps> = ({ onFilter, text }) => {
     onFilter(filteredSentences.join(". "));
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter(e.target.value);
+  };
+
+  const handleBlur = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    applyFilter(e.target.value, operator);
+  };
+  const handleOperatorChange = (value: string) => {
+    const newOperator = value as FilterOperator;
+    setOperator(newOperator);
+    applyFilter(filter, newOperator);
+  };
+
   return (
     <div>
       <div>
-        <Input onChange={throttle(handleChange, 1000)} value={filter}></Input>
+        <Input
+          onChange={handleInputChange}
+          onBlur={handleBlur}
+          value={filter}
+        ></Input>
       </div>
       <Select
         defaultValue={FilterCondition.AND}
