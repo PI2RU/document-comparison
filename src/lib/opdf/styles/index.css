@@ -54,9 +54,9 @@
   z-index: 50000; /* should be higher than anything else in PDF.js! */
 }
 
-.select_highlight {
-  outline: 2px solid red;
-  transition: outline-color 0.3s;
+.default_match_highlight.select_highlight {
+  transition: background-color 0.3s;
+  background-color: rgba(190, 16, 16, 0.8) !important;
   cursor: pointer !important;
   border-radius: 2px;
 }
