@@ -1,4 +1,4 @@
-import { Input, Select } from "antd";
+import { Input, Select, Space } from "antd";
 import { FC, useState } from "react";
 import useSWRMutation from "swr/mutation";
 
@@ -77,14 +77,8 @@ export const FilterWord: FC<KeywordFilterProps> = ({ onFilter, text }) => {
   };
 
   return (
-    <div>
-      <div>
-        <Input
-          onChange={handleInputChange}
-          onBlur={handleBlur}
-          value={filter}
-        ></Input>
-      </div>
+    <Space>
+      <Input onChange={handleInputChange} onBlur={handleBlur} value={filter} />
       <Select
         defaultValue={FilterCondition.AND}
         style={{ width: 120 }}
@@ -95,6 +89,6 @@ export const FilterWord: FC<KeywordFilterProps> = ({ onFilter, text }) => {
           { value: FilterCondition.NOT, label: "NOT" },
         ]}
       />
-    </div>
+    </Space>
   );
 };

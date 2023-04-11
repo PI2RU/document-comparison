@@ -1,4 +1,4 @@
-import { Divider, Tag, Tooltip } from "antd";
+import { Divider, Space, Tag, Tooltip } from "antd";
 import { ScrollView } from "@/lib";
 
 import { SummaryBox } from "./summaryBox";
@@ -73,12 +73,11 @@ export const ControlBox = ({
             })}
           </div>
           <Divider />
-          {/* <FilterWords /> */}
-          <span>
-            <span>过滤条件：</span>
-          </span>
-          {filteredText}
-          <FilterWord text={text} onFilter={handleFilter} />
+          <Space direction="vertical">
+            <span>过滤词：</span>
+            <span className="text-xs text-slate-600">{filteredText}</span>
+            <FilterWord text={text} onFilter={handleFilter} />
+          </Space>
         </div>
       </div>
     </div>
