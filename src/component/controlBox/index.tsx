@@ -1,5 +1,7 @@
 import { ScrollView } from "@/lib";
-import { Button, Slider, Space, Tag, Tooltip } from "antd";
+import { Button, Rate, Slider, Space, Tag, Tooltip } from "antd";
+import { RedoOutlined } from "@ant-design/icons";
+
 import { SliderMarks } from "antd/es/slider";
 import { ChangeEvent, useEffect, useState } from "react";
 
@@ -26,10 +28,7 @@ export const ControlBox = ({
     <div className={styles.controlBox}>
       <h5 className={styles.boxTitle}>控制面板</h5>
       <div>
-        <div className="flex justify-between align-middle">
-          <SummaryBox />
-          <ColorPicker />
-        </div>
+        <SummaryBox />
         <div>
           <div>
             {props?.summary?.map((item, index) => {
@@ -85,17 +84,11 @@ const marks: SliderMarks = {
 export const SummaryBox = () => {
   return (
     <div className={styles.summaryBox}>
-      <div>精确度</div>
-      <Slider
-        style={{
-          backgroundColor: bgColors.word,
-        }}
-        marks={marks}
-        defaultValue={60}
-        max={100}
-        min={20}
-        step={20}
-      />
+      <Space direction="vertical">
+        <span>精确度</span>
+        <Rate character="A" allowHalf style={{ fontSize: 24 }} />
+      </Space>
+      <ColorPicker />
     </div>
   );
 };
@@ -164,8 +157,8 @@ export const ColorPicker = () => {
   };
 
   return (
-    <div className={styles.colorPickerContainer}>
-      <div>关键词颜色</div>
+    <span className="flex justify-center align-middle">
+      <span className="mr-2">色彩</span>
       <Space>
         <input
           type="color"
@@ -174,10 +167,10 @@ export const ColorPicker = () => {
           onBlur={saveColor}
           className={styles.colorInput}
         />
-        <Button onClick={resetColor} size="small">
-          撤回
-        </Button>
+        <span>
+          <RedoOutlined onClick={resetColor} />
+        </span>
       </Space>
-    </div>
+    </span>
   );
 };

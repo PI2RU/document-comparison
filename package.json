@@ -11,6 +11,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
     "@dqbd/tiktoken": "^1.0.3",
     "antd": "^5.4.0",
     "langchain": "^0.0.48",
