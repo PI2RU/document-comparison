@@ -78,17 +78,17 @@ export const FilterWord: FC<KeywordFilterProps> = ({ onFilter, text }) => {
 
   return (
     <Space>
-      <Input onChange={handleInputChange} onBlur={handleBlur} value={filter} />
       <Select
         defaultValue={FilterCondition.AND}
         style={{ width: 120 }}
         onChange={handleOperatorChange}
         options={[
-          { value: FilterCondition.AND, label: "AND" },
-          { value: FilterCondition.OR, label: "OR" },
-          { value: FilterCondition.NOT, label: "NOT" },
+          { value: FilterCondition.AND, label: "包含" },
+          { value: FilterCondition.OR, label: "包含任一" },
+          { value: FilterCondition.NOT, label: "不包含" },
         ]}
       />
+      <Input onChange={handleInputChange} onBlur={handleBlur} value={filter} />
     </Space>
   );
 };

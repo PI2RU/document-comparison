@@ -74,9 +74,12 @@ export const ControlBox = ({
           </div>
           <Divider />
           <Space direction="vertical">
-            <span>过滤词：</span>
-            <span className="text-xs text-slate-600">{filteredText}</span>
+            <span>文书过滤：</span>
+            <span className="text-xs text-slate-600">{text}</span>
             <FilterWord text={text} onFilter={handleFilter} />
+            <span className="text-xs text-slate-600">
+              {filteredText && "暂无过滤结果"}
+            </span>
           </Space>
         </div>
       </div>

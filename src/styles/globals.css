@@ -8,27 +8,3 @@ body {
   height: 100%;
   z-index: 1;
 }
-
-.pdfViewer > .page {
-  margin-top: 24px !important;
-  margin-bottom: 24px !important;
-  border: 1px solid #222 !important;
-}
-
-.pdfTwo {
-  display: flex;
-  margin-left: 320px;
-  width: calc(100% - 640px);
-}
-
-#pdfViewer {
-  width: 50%;
-  height: 100%;
-  border: 1px solid #222;
-}
-
-#pdfViewer2 {
-  width: 50%;
-  height: 100%;
-  border: 1px solid #222;
-}

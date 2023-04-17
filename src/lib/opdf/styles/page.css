@@ -1,0 +1,6 @@
+.opdf_page {
+  position: relative;
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
+  border: 1px solid #222 !important;
+}

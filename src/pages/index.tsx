@@ -4,6 +4,7 @@ import { PdfViewer } from "@/component/pdfViewer";
 import { SearchBox } from "@/component/searchBox";
 import { BoxData } from "@/types/App";
 import { MouseEvent, useEffect, useRef, useState } from "react";
+import styles from "./index.module.scss";
 
 import { GlobalWorkerOptions, version } from "pdfjs-dist";
 import "pdfjs-dist/web/pdf_viewer.css";
@@ -103,7 +104,10 @@ export default function Home() {
           uniqueId: "pdf1",
         }}
       />
-      <div className="pdfTwo" onContextMenu={(e) => handleContextMenu(e)}>
+      <div
+        className={styles.pdfTwo}
+        onContextMenu={(e) => handleContextMenu(e)}
+      >
         <PdfViewer
           pdfRef={pdfRef}
           pdfRef2={pdfRef2}

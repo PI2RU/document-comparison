@@ -1,5 +1,6 @@
-import React, { RefObject, useEffect, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { OPdf } from "../../lib/opdf";
+import styles from "./index.module.scss";
 
 const pdfUrl = "/assets/fangchan.pdf";
 
@@ -36,6 +37,68 @@ export const PdfViewer = ({
   // TODO:切换全部渲染和单页渲染的缓存
   const [Opdf, setOpdf] = useState<OPdf | null>(null);
   const [Opdf2, setOpdf2] = useState<OPdf | null>(null);
+
+  const resizerRef = useRef<HTMLDivElement>(null);
+  const [isResizing, setIsResizing] = useState(false);
+
+  useEffect(() => {
+    const pdfRefCurrent = pdfRef.current;
+    const pdfRef2Current = pdfRef2.current;
+
+    if (pdfRefCurrent && pdfRef2Current) {
+      const handleScroll1 = (event: any) => {
+        pdfRef2.current!.scrollTop = event.target.scrollTop;
+      };
+
+      const handleScroll2 = (event: any) => {
+        pdfRef.current!.scrollTop = event.target.scrollTop;
+      };
+
+      pdfRef.current.addEventListener("scroll", handleScroll1);
+      pdfRef2.current.addEventListener("scroll", handleScroll2);
+
+      return () => {
+        pdfRefCurrent.removeEventListener("scroll", handleScroll1);
+        pdfRef2Current.removeEventListener("scroll", handleScroll2);
+      };
+    }
+  }, [pdfRef, pdfRef2]);
+
+  useEffect(() => {
+    const resizerRefCurrent = resizerRef.current;
+    if (resizerRefCurrent) {
+      const handleMouseDown = (event: MouseEvent) => {
+        setIsResizing(true);
+        event.preventDefault();
+      };
+
+      const handleMouseMove = (event: MouseEvent) => {
+        if (!isResizing) return;
+
+        const containerWidth = pdfRef.current?.parentElement?.clientWidth;
+        if (containerWidth && pdfRef2.current) {
+          const newWidth = (event.clientX / containerWidth) * 100;
+          pdfRef.current.style.width = newWidth + "%";
+          pdfRef2.current.style.width = 100 - newWidth + "%";
+        }
+      };
+
+      const handleMouseUp = () => {
+        setIsResizing(false);
+      };
+
+      resizerRef.current?.addEventListener("mousedown", handleMouseDown);
+
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+
+      return () => {
+        resizerRefCurrent?.removeEventListener("mousedown", handleMouseDown);
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+      };
+    }
+  }, []);
 
   useEffect(() => {
     if (!pdfRef.current) return;
@@ -88,8 +151,13 @@ export const PdfViewer = ({
 
   return (
     <>
-      <div id="pdfViewer" ref={pdfRef} className="pdfViewer"></div>
-      <div id="pdfViewer2" ref={pdfRef2} className="pdfViewer"></div>
+      <div className={styles.pdfViewerWrap}>
+        <div ref={pdfRef} className={`${styles.pdfViewer} scroll-smooth`} />
+      </div>
+      <div ref={resizerRef} />
+      <div className={styles.pdfViewerWrap}>
+        <div ref={pdfRef2} className={`${styles.pdfViewer} scroll-smooth`} />
+      </div>
     </>
   );
 };

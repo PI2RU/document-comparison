@@ -1,0 +1,25 @@
+.pdfViewerWrap {
+  width: 50%;
+  height: 100%;
+  position: relative;
+}
+
+.pdfViewer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid #222;
+}
+
+.resizer {
+  cursor: col-resize;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 100%;
+  background-color: #ccc;
+  z-index: 1;
+}

@@ -41,7 +41,6 @@ export class Layer {
 
     const textContentStream = pageProxy.streamTextContent({
       includeMarkedContent: true,
-      disableCombineTextItems: false,
     });
 
     return {
